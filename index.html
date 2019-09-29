@@ -13,7 +13,7 @@ body {
 }
 #cont {
 	display:inline-block;
-	background-color:#DDD;
+	background-color:#0099e6;
 	padding:20px;
 }
 #console {
@@ -35,7 +35,7 @@ h2 {
 #header {
 	background-color:#000;
 	color:white;
-	font-size:52px;
+	font-size:40px;
 	padding:10px;
 	margin:0;
 	text-align:center;
@@ -46,20 +46,20 @@ h2 {
 	color:#333;
 }
 .caution {
-	background-color:#FF0;
-	color:#FF0;
+	background-color:#ff944d;
+	color:#ff944d;
 }
 .danger {
-	background-color:#F00;
-	color:#F00;
+	background-color:#990000;
+	color:#990000;
 }
 table {
 	margin: auto;
 	/* [disabled]display:inline-block; */
 }
 table,tr,td {
-	border:2px solid black;
-	background-color:#FFF;
+	border:2px solid #005580;
+	background-color:#99ddff;
 }
 td {
 	width:85px;
@@ -78,7 +78,7 @@ input {
 </head>
 
 <body>
-<div id="header">Wumpus World!</div>
+<div id="header">Welcome to Wumpus World!</div>
 <div id="pos"><h2>CONSOLE</h2><br/>
 <div id="console"></div>
 </div>
@@ -89,7 +89,7 @@ input {
 window.setInterval(function(){
 	if (!gameOver && auto)
   		move();
-}, 100);
+}, 500);
 
 //Generates the table with uniquely ID'd cells in which for the game to take place
 for (i=0; i<7;i++) {
@@ -100,7 +100,7 @@ for (i=0; i<7;i++) {
 	document.write("</tr>");
 }
 $(r6c0).removeClass("hidden");
-$(r6c0).html("HERO");
+$(r6c0).html('<img src="hero.png" height="50" width="50"/>');
 
 //Arrays
 pos = [6,0];
@@ -173,7 +173,7 @@ function move() {
 		ref=true;
 	} else if (gameOver && ref) {}
 	else {
-	$('#r'+pos[0]+'c'+pos[1]).html($('#r'+pos[0]+'c'+pos[1]).text().replace("HERO","\r"));
+	$('#r'+pos[0]+'c'+pos[1]).html($('#r'+pos[0]+'c'+pos[1]).text().replace("AI","\r"));
 	$('#r'+pos[0]+'c'+pos[1]).html($('#r'+pos[0]+'c'+pos[1]).text().replace(/STENCH/g,"STENCH\r"));
 	$('#r'+pos[0]+'c'+pos[1]).html($('#r'+pos[0]+'c'+pos[1]).text().replace(/BREEZE/g,"BREEZE\r"));
 	$('#r'+pos[0]+'c'+pos[1]).html($('#r'+pos[0]+'c'+pos[1]).text().replace(/PIT/g,"PIT\r"));
@@ -253,18 +253,18 @@ function move() {
 		desPos = [];
 	}
 	if ($('#r'+pos[0]+'c'+pos[1]).text().search("GOLD") >= 0) {
-		$('#console').prepend("<h1>YOU WIN!</h1>");
+		$('#console').prepend("<h1>AI Wins! :D</h1>");
 		$("#movebutton").html("Reset");
 		gameOver = true;
 		
 	}
 	if ($('#r'+pos[0]+'c'+pos[1]).text().search("WUMPUS") >= 0) {
-		$('#console').prepend("<h1>YOU LOSE! Good day sir!</h1><br/>");
+		$('#console').prepend("<h1>AI Loses! :( </h1><br/>");
 		$("#movebutton").html("Reset");
 		gameOver = true;
 	}
 	if ($('#r'+pos[0]+'c'+pos[1]).text().search("PIT") >= 0) {
-		$('#console').prepend("<h1>YOU LOSE! Good day sir!</h1><br/>");
+		$('#console').prepend("<h1>AI LOSE! Good day sir!</h1><br/>");
 		$("#movebutton").html("Reset");
 		gameOver = true;
 	}
@@ -394,7 +394,7 @@ function move() {
 	$('#r'+pos[0]+'c'+pos[1]).removeClass("hidden");
 	$('#r'+pos[0]+'c'+pos[1]).removeClass("caution");
 	$('#r'+pos[0]+'c'+pos[1]).removeClass("danger");
-	$('#r'+pos[0]+'c'+pos[1]).append("HERO");
+	$('#r'+pos[0]+'c'+pos[1]).append('<img src="hero.png" height="50" width="50"/>');
 	} 
 }
 function moveLeft() {
@@ -520,6 +520,7 @@ function autoRun() {
 <br/>
 <button onclick="move();" id="movebutton">Next Move</button>
 <button onclick="autoRun();" id="movebutton">Auto Run</button>
+<button onclick="resetPage();" id="movebutton">Reset Move</button>
 </div>
 </body>
 </html>
