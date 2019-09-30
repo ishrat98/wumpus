@@ -1,3 +1,25 @@
+//Arrays
+pos = [numberOfRow-1,0];
+prevPos = [numberOfRow-1,0];
+desPos = [];
+moves = [[numberOfRow-1,0]];
+visited = [[numberOfRow-1,0]];
+prevPathing = [];
+pathing = [];
+danger = [];
+danger2 = [];
+breeze = [];
+stench = [];
+safe = [[numberOfRow-1,0]];;
+
+//Other stuff
+gameOver = false;
+ref=false;
+auto=false;
+
+					
+generateWorld();
+
 function resetWorld() {
 	pos = [9,0];
 	prevPos = [9,0];
@@ -163,12 +185,12 @@ function move(){
 			
 		}
 		if ($('#r'+pos[0]+'c'+pos[1]).text().search("WUMPUS") >= 0) {
-			$('#console').prepend("<h1>AI Loses! :( </h1><br/>");
+			$('#console').prepend("<h1>AI LOSES! Eaten by WUMPUS :( </h1><br/>");
 			$("#movebutton").html("Reset");
 			gameOver = true;
 		}
 		if ($('#r'+pos[0]+'c'+pos[1]).text().search("PIT") >= 0) {
-			$('#console').prepend("<h1>AI LOSE! Good day sir!</h1><br/>");
+			$('#console').prepend("<h1>AI LOSES! fell in PIT !!!!</h1><br/>");
 			$("#movebutton").html("Reset");
 			gameOver = true;
 		}
@@ -296,6 +318,8 @@ function move(){
 			visited.push(pos);
 			
 		$('#r'+pos[0]+'c'+pos[1]).removeClass("hidden");
+		$('#r'+pos[0]+'c'+pos[1]).removeClass("cautionPit");
+		$('#r'+pos[0]+'c'+pos[1]).removeClass("dangerPit");
 		$('#r'+pos[0]+'c'+pos[1]).removeClass("caution");
 		$('#r'+pos[0]+'c'+pos[1]).removeClass("danger");
 		$('#r'+pos[0]+'c'+pos[1]).append('<img src="hero.png" height="50" width="50"/>');
