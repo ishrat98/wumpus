@@ -20,13 +20,14 @@
 				<script type="text/javascript">
 					//Runs the code inside every 100 milliseconds; used for the auto play function
 					window.setInterval(function(){
-						if (!gameOver && auto)
+						if (!gameOver && auto){
 					  		move();
-					}, 500);
+						}
+					}, 50);
 
 					//Generates the table with uniquely ID'd cells in which for the game to take place
-					numberOfRow = 7;
-					numberOfCol = 7;
+					numberOfRow = 10;
+					numberOfCol = 10;
 					for (i=0; i<numberOfRow;i++) {
 						document.write("<tr>");
 						for (q=0; q<numberOfCol; q++) {
@@ -34,8 +35,10 @@
 						}
 						document.write("</tr>");
 					}
-					$(r6c0).removeClass("hidden");
-					$(r6c0).html('<img src="hero.png" height="50" width="50"/>');
+
+
+					$(r9c0).removeClass("hidden");
+					$(r9c0).html('<img src="hero.png" height="50" width="50"/>');
 
 					//Arrays
 					pos = [numberOfRow-1,0];
@@ -60,10 +63,62 @@
 				</script>
 			</table>
 
+
+
 			<br>
 			<button onclick="move();" id="movebutton">Next Move</button>
 			<button onclick="autoRun();" id="movebutton">Auto Run</button>
 			<button onclick="resetPage();" id="movebutton">Reset Move</button>
 		</div>
+
+		<div id="cont2">
+
+				<table>
+				<script type="text/javascript">
+					//Runs the code inside every 100 milliseconds; used for the auto play function
+					window.setInterval(function(){
+						if (!gameOver && auto){
+					  		move();
+						}
+					}, 50);
+
+					//Generates the table with uniquely ID'd cells in which for the game to take place
+					numberOfRow = 10;
+					numberOfCol = 10;
+					for (i=0; i<numberOfRow;i++) {
+						document.write("<tr>");
+						for (q=0; q<numberOfCol; q++) {
+								document.write('<td id="r'+i+'c'+q+'" ></td>');
+						}
+						document.write("</tr>");
+					}
+
+
+					$(r9c0).removeClass("hidden");
+					$(r9c0).html('<img src="hero.png" height="50" width="50"/>');
+
+					//Arrays
+					pos = [numberOfRow-1,0];
+					prevPos = [numberOfRow-1,0];
+					desPos = [];
+					moves = [[numberOfRow-1,0]];
+					visited = [[numberOfRow-1,0]];
+					prevPathing = [];
+					pathing = [];
+					danger = [];
+					danger2 = [];
+					breeze = [];
+					stench = [];
+
+					//Other stuff
+					gameOver = false;
+					ref=false;
+					auto=false;
+
+					generateWorld();
+				</script>
+			</table>
+			</div>
+		
 	</body>
 </html>

@@ -1,15 +1,31 @@
 body {
-	text-align:center;
+	
 	background-color:#666;
 	margin:0;
 	font-family:"Lucida Console", Monaco, monospace;
 }
 #cont {
+	text-align:left;
 	display:inline-block;
 	background-color:#0099e6;
 	padding:20px;
 }
+
+#cont2 {
+	text-align:right;
+	display:inline-block;
+	background-color:#0099e6;
+	float: right;
+	padding:10px;
+}
+
+#cont2 td {
+	width:50px;
+	height:50px;
+	text-align:center;
+}
 #console {
+	text-align: center;
 	font-family:"Lucida Console", Monaco, monospace;
 	font-size:12px;
 	
@@ -38,6 +54,16 @@ h2 {
 	background-color:#333;
 	color:#333;
 }
+
+.cautionPit {
+	background-color:#8d6e63;
+	color:#8d6e63;
+}
+.dangerPit {
+	background-color:#5f4339;
+	color:#5f4339;
+}
+
 .caution {
 	background-color:#ff944d;
 	color:#ff944d;

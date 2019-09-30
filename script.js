@@ -1,9 +1,9 @@
 function resetWorld() {
-	pos = [6,0];
-	prevPos = [6,0];
+	pos = [9,0];
+	prevPos = [9,0];
 	desPos = [];
-	moves = [[6,0]];
-	visited = [[6,0]];
+	moves = [[9,0]];
+	visited = [[9,0]];
 	prevPathing = [];
 	pathing = [];
 	danger = [];
@@ -17,26 +17,30 @@ function resetWorld() {
 function generateWorld() {
 	dangerChance = 8;
 
-	g = [Math.round(Math.random()*6),Math.round(Math.random()*6)];
-	while(g[1] == 0 || (g[0] == 6 && g[1] == 1)) {
-		g = [Math.round(Math.random()*6),Math.round(Math.random()*6)];
+	dangerReducerProbabilityValue = 200;
+
+	g = [Math.round(Math.random()*9),Math.round(Math.random()*9)];
+	while(g[1] == 0 || (g[0] == 9 && g[1] == 1)) {
+		g = [Math.round(Math.random()*9),Math.round(Math.random()*9)];
 	}
 	$('#r'+g[0]+'c'+g[1]).prepend("GOLD<br/>");
-	for (i=0;i<7;i++) {
-		for (q=0;q<7;q++) {
-			rand = Math.round(Math.random()*100);
-			if (rand >= (100-dangerChance) && ((i!=5 || q != 0) && (i!=6 || q!=1) && (i!=6 || q!=0) && (i!=g[0] || q!=g[1]))) {
-				$('#r'+i+'c'+q).prepend("WUMPUS<br/>");
-				if (i > 0) $('#r'+(i-1)+'c'+q).prepend("STENCH<br/>");
-				if (i < 6) $('#r'+(i+1)+'c'+q).prepend("STENCH<br/>");
-				if (q > 0) $('#r'+i+'c'+(q-1)).prepend("STENCH<br/>");
-				if (q < 6) $('#r'+i+'c'+(q+1)).prepend("STENCH<br/>");
-			} else if (rand >= (100-(dangerChance*2)) && ((i!=5 || q != 0) && (i!=6 || q!=1) && (i!=6 || q!=0) && (i!=g[0] || q!=g[1]))) {
-				$('#r'+i+'c'+q).prepend("PIT<br/>");
-				if (i > 0) $('#r'+(i-1)+'c'+q).prepend("BREEZE<br/>");
-				if (i < 6) $('#r'+(i+1)+'c'+q).prepend("BREEZE<br/>");
-				if (q > 0) $('#r'+i+'c'+(q-1)).prepend("BREEZE<br/>");
-				if (q < 6) $('#r'+i+'c'+(q+1)).prepend("BREEZE<br/>");
+	for (row=0;row<10;row++) {
+		for (col=0;col<10;col++) {
+			rand = Math.round(Math.random()*dangerReducerProbabilityValue);
+			if (rand >= (dangerReducerProbabilityValue-dangerChance) && ((row!=8 || col != 0) && (row!=9 || col!=1) && (row!=9 || col!=0)
+			 && (row!=g[0] || col!=g[1]))) {
+				$('#r'+row+'c'+col).prepend("WUMPUS<br/>");
+				if (row > 0) $('#r'+(row-1)+'c'+col).prepend("STENCH<br/>");
+				if (row < 9) $('#r'+(row+1)+'c'+col).prepend("STENCH<br/>");
+				if (col > 0) $('#r'+row+'c'+(col-1)).prepend("STENCH<br/>");
+				if (col < 9) $('#r'+row+'c'+(col+1)).prepend("STENCH<br/>");
+			} else if (rand >= (dangerReducerProbabilityValue-(dangerChance*2)) && ((row!=8 || col != 0) && (row!=9 || col!=1)
+			 && (row!=9 || col!=0) && (row!=g[0] || col!=g[1]))) {
+				$('#r'+row+'c'+col).prepend("PIT<br/>");
+				if (row > 0) $('#r'+(row-1)+'c'+col).prepend("BREEZE<br/>");
+				if (row < 9) $('#r'+(row+1)+'c'+col).prepend("BREEZE<br/>");
+				if (col > 0) $('#r'+row+'c'+(col-1)).prepend("BREEZE<br/>");
+				if (col < 9) $('#r'+row+'c'+(col+1)).prepend("BREEZE<br/>");
 			}
 		}
 	}
@@ -61,6 +65,7 @@ function move(){
 		ref=true;
 	} 
 	else if (gameOver && ref) {}
+	
 	else {
 
 		$('#r'+pos[0]+'c'+pos[1]).html($('#r'+pos[0]+'c'+pos[1]).text().replace("AI","\r"));
@@ -74,14 +79,20 @@ function move(){
 			$('#console').prepend("desPos = [" + desPos[0] + "," + desPos[1] + "]<br/>");
 			if (desPos[0] > pos[0] && checkArray(visited, [pos[0]+1,pos[1]]) && !checkArray(pathing,[pos[0]+1,pos[1]])) {
 				moveDown();
-			} else if (desPos[0] < pos[0] && checkArray(visited, [pos[0]-1,pos[1]]) && !checkArray(pathing,[pos[0]-1,pos[1]])) {
+			} 
+			else if (desPos[0] < pos[0] && checkArray(visited, [pos[0]-1,pos[1]]) && !checkArray(pathing,[pos[0]-1,pos[1]])) {
 				moveUp();
-			} else if (desPos[1] > pos[1] && checkArray(visited, [pos[0],pos[1] + 1]) && !checkArray(pathing,[pos[0],pos[1] + 1])) {
+			} 
+			else if (desPos[1] > pos[1] && checkArray(visited, [pos[0],pos[1] + 1]) && !checkArray(pathing,[pos[0],pos[1] + 1])) {
 				moveRight();
-			} else if (desPos[1] < pos[1] && checkArray(visited, [pos[0],pos[1] - 1]) && !checkArray(pathing,[pos[0],pos[1] - 1])) {
+			} 
+
+			else if (desPos[1] < pos[1] && checkArray(visited, [pos[0],pos[1] - 1]) && !checkArray(pathing,[pos[0],pos[1] - 1])) {
 				moveLeft();
-			} else {
-				if (checkArray(visited, [pos[0]+1,pos[1]]) && !checkArray(pathing,[pos[0]+1,pos[1]])) {
+			} 
+
+			else {
+			  	if (checkArray(visited, [pos[0]+1,pos[1]]) && !checkArray(pathing,[pos[0]+1,pos[1]])) {
 					moveDown();
 				} else if (checkArray(visited, [pos[0]-1,pos[1]]) && !checkArray(pathing,[pos[0]-1,pos[1]])) {
 					moveUp();
@@ -94,7 +105,9 @@ function move(){
 				}
 			}
 			pathing.push(pos);
-		} else if (desPos.length > 1 && !checkArray(visited,desPos)) {
+		}
+
+		else if (desPos.length > 1 && !checkArray(visited,desPos)) {
 			if ((desPos[0] > pos[0] && checkArray(visited, [pos[0]+1,pos[1]]) && !checkArray(pathing,[pos[0]+1,pos[1]])) || ((pos[0] + 1) == desPos[0] && pos[1] == desPos[1])) {
 				moveDown();
 				removeFrom(danger,pos);
@@ -128,9 +141,9 @@ function move(){
 		} else {
 			if (!checkArray(danger,[(pos[0]-1),pos[1]]) && pos[0] > 0 && !checkArray(visited, [(pos[0]-1),pos[1]])) {
 				moveUp();
-			} else if (!checkArray(danger,[pos[0],(pos[1]+1)]) && pos[1] < 6 && !checkArray(visited, [pos[0],(pos[1]+1)])) {
+			} else if (!checkArray(danger,[pos[0],(pos[1]+1)]) && pos[1] < 9 && !checkArray(visited, [pos[0],(pos[1]+1)])) {
 				moveRight();
-			} else if (!checkArray(danger,[(pos[0]+1),pos[1]]) && pos[0] < 6 && !checkArray(visited, [(pos[0]+1),pos[1]])) {
+			} else if (!checkArray(danger,[(pos[0]+1),pos[1]]) && pos[0] < 9 && !checkArray(visited, [(pos[0]+1),pos[1]])) {
 				moveDown();
 			}
 			else if (!checkArray(danger,[pos[0],(pos[1]-1)]) && pos[1] > 0 && !checkArray(visited, [pos[0],(pos[1]-1)])) {
@@ -178,7 +191,7 @@ function move(){
 				} 
 				$('#console').prepend("Potential Wumpus At: " + "[" + (pos[0]-1) + "," + pos[1] + "]<br/>");
 			}
-			if (!checkArray(visited,[pos[0]+1,pos[1]]) && pos[0] < 6) {
+			if (!checkArray(visited,[pos[0]+1,pos[1]]) && pos[0] < 9) {
 				if (!checkArray(danger, [pos[0]+1,pos[1]]) && !dubs) {
 					danger.push([pos[0]+1,pos[1]]);
 					$('#r'+(pos[0]+1)+'c'+pos[1]).removeClass("hidden");
@@ -204,7 +217,7 @@ function move(){
 				}
 				$('#console').prepend("Potential Wumpus At: " + "[" + pos[0] + "," + (pos[1]-1) + "]<br/>");
 			}
-			if (!checkArray(visited,[pos[0],pos[1]+1]) && pos[1] < 6) {
+			if (!checkArray(visited,[pos[0],pos[1]+1]) && pos[1] < 9) {
 				if (!checkArray(danger, [pos[0],pos[1]+1]) && !dubs) {
 					danger.push([pos[0],pos[1]+1]);
 					$('#r'+pos[0]+'c'+(pos[1]+1)).removeClass("hidden");
@@ -228,25 +241,25 @@ function move(){
 				if (!checkArray(danger, [pos[0]-1,pos[1]]) && !dubs) {
 					danger.push([pos[0]-1,pos[1]]);
 					$('#r'+(pos[0]-1)+'c'+pos[1]).removeClass("hidden");
-					$('#r'+(pos[0]-1)+'c'+pos[1]).addClass("caution");
+					$('#r'+(pos[0]-1)+'c'+pos[1]).addClass("cautionPit");
 				} else if (!checkArray(danger2, [pos[0]-1,pos[1]]) || dubs) {
 					if (dubs) danger.push([pos[0]-1,pos[1]]);
 					danger2.push([pos[0]-1,pos[1]]);
-					$('#r'+(pos[0]-1)+'c'+pos[1]).removeClass("caution");
-					$('#r'+(pos[0]-1)+'c'+pos[1]).addClass("danger");
+					$('#r'+(pos[0]-1)+'c'+pos[1]).removeClass("cautionPit");
+					$('#r'+(pos[0]-1)+'c'+pos[1]).addClass("dangerPit");
 				}
 				$('#console').prepend("Potential Pit At: " + "[" + (pos[0]-1) + "," + pos[1] + "]<br/>");
 			}
-			if (!checkArray(visited,[pos[0]+1,pos[1]]) && pos[0] < 6) {
+			if (!checkArray(visited,[pos[0]+1,pos[1]]) && pos[0] < 9) {
 				if (!checkArray(danger, [pos[0]+1,pos[1]]) && !dubs) {
 					danger.push([pos[0]+1,pos[1]]);
 					$('#r'+(pos[0]+1)+'c'+pos[1]).removeClass("hidden");
-					$('#r'+(pos[0]+1)+'c'+pos[1]).addClass("caution");
+					$('#r'+(pos[0]+1)+'c'+pos[1]).addClass("cautionPit");
 				} else if (!checkArray(danger2, [pos[0]+1,pos[1]]) || dubs) {
 					if (dubs) danger.push([pos[0]+1,pos[1]]);
 					danger2.push([pos[0]+1,pos[1]]);
-					$('#r'+(pos[0]+1)+'c'+pos[1]).removeClass("caution");
-					$('#r'+(pos[0]+1)+'c'+pos[1]).addClass("danger");
+					$('#r'+(pos[0]+1)+'c'+pos[1]).removeClass("cautionPit");
+					$('#r'+(pos[0]+1)+'c'+pos[1]).addClass("dangerPit");
 				} 
 				$('#console').prepend("Potential Pit At: " + "[" + (pos[0]+1) + "," + pos[1] + "]<br/>");
 			}
@@ -254,25 +267,25 @@ function move(){
 				if (!checkArray(danger, [pos[0],pos[1]-1]) && !dubs) {
 					danger.push([pos[0],pos[1]-1]);
 					$('#r'+pos[0]+'c'+(pos[1]-1)).removeClass("hidden");
-					$('#r'+pos[0]+'c'+(pos[1]-1)).addClass("caution");
+					$('#r'+pos[0]+'c'+(pos[1]-1)).addClass("cautionPit");
 				} else if (!checkArray(danger2, [pos[0],pos[1]-1]) || dubs) {
 					if (dubs) danger.push([pos[0],pos[1]-1]);
 					danger2.push([pos[0],pos[1]-1]);
-					$('#r'+pos[0]+'c'+(pos[1]-1)).removeClass("caution");
-					$('#r'+pos[0]+'c'+(pos[1]-1)).addClass("danger");
+					$('#r'+pos[0]+'c'+(pos[1]-1)).removeClass("cautionPit");
+					$('#r'+pos[0]+'c'+(pos[1]-1)).addClass("dangerPit");
 				}
 				$('#console').prepend("Potential Pit At: " + "[" + pos[0] + "," + (pos[1]-1) + "]<br/>");
 			}
-			if (!checkArray(visited,[pos[0],pos[1]+1]) && pos[1] < 6) {
+			if (!checkArray(visited,[pos[0],pos[1]+1]) && pos[1] < 9) {
 				if (!checkArray(danger, [pos[0],pos[1]+1]) && !dubs) {
 					danger.push([pos[0],pos[1]+1]);
 					$('#r'+pos[0]+'c'+(pos[1]+1)).removeClass("hidden");
-					$('#r'+pos[0]+'c'+(pos[1]+1)).addClass("caution");
+					$('#r'+pos[0]+'c'+(pos[1]+1)).addClass("cautionPit");
 				} else if (!checkArray(danger2, [pos[0],pos[1]+1]) || dubs) {
 					if (dubs) danger.push([pos[0],pos[1]+1]);
 					danger2.push([pos[0],pos[1]+1]);
-					$('#r'+pos[0]+'c'+(pos[1]+1)).removeClass("caution");
-					$('#r'+pos[0]+'c'+(pos[1]+1)).addClass("danger");
+					$('#r'+pos[0]+'c'+(pos[1]+1)).removeClass("cautionPit");
+					$('#r'+pos[0]+'c'+(pos[1]+1)).addClass("dangerPit");
 				}
 				$('#console').prepend("Potential Pit At: " + "[" + pos[0] + "," + (pos[1]+1) + "]<br/>");
 			}
@@ -290,8 +303,8 @@ function move(){
 }
 
 function checkArray(array,value) {
-	for (i=0; i < array.length; i++) {
-		if (array[i].join() == value.join()) {
+	for (row=0; row < array.length; row++) {
+		if (array[row].join() == value.join()) {
 			return true;
 			break;
 		} 
@@ -300,8 +313,8 @@ function checkArray(array,value) {
 }
 function getAll(array) {
 	a="";
-	for (i=0; i < array.length; i++) {
-		a+=array[i]+"\n";
+	for (row=0; row < array.length; row++) {
+		a+=array[row]+"\n";
 	}
 	return a;
 }
@@ -315,10 +328,10 @@ function checkLast() {
 		if (!checkArray(danger,[(lpos[0]-1),lpos[1]]) && lpos[0] > 0 && !checkArray(visited, [(lpos[0]-1),lpos[1]])) {
 			desPos = lpos;//[lpos[0]-1,lpos[1]];
 			$('#console').prepend("desPos set! desPos = [" + desPos[0] + "," + desPos[1] + "]<br/>");
-		} else if (!checkArray(danger,[lpos[0],(lpos[1]+1)]) && lpos[1] < 6 && !checkArray(visited, [lpos[0],(lpos[1]+1)])) {
+		} else if (!checkArray(danger,[lpos[0],(lpos[1]+1)]) && lpos[1] < 9 && !checkArray(visited, [lpos[0],(lpos[1]+1)])) {
 			desPos = lpos;//[lpos[0],lpos[1]+1];
 			$('#console').prepend("desPos set! desPos = [" + desPos[0] + "," + desPos[1] + "]<br/>");
-		} else if (!checkArray(danger,[(lpos[0]+1),lpos[1]]) && lpos[0] < 6 && !checkArray(visited, [(lpos[0]+1),lpos[1]])) {
+		} else if (!checkArray(danger,[(lpos[0]+1),lpos[1]]) && lpos[0] < 9 && !checkArray(visited, [(lpos[0]+1),lpos[1]])) {
 			desPos = lpos;//[lpos[0]+1,lpos[1]];
 			$('#console').prepend("desPos set! desPos = [" + desPos[0] + "," + desPos[1] + "]<br/>");
 		} else if (!checkArray(danger,[lpos[0],(lpos[1]-1)]) && lpos[1] > 0 && !checkArray(visited, [lpos[0],(lpos[1]-1)])) {
@@ -344,13 +357,15 @@ function checkLast() {
 	
 }
 
+
+
 function pickRandom() {
 	try {
-	i=0;
+	row=0;
 	randSpace = danger[Math.round(Math.random() * (danger.length-1))];
 	while (checkArray(danger2,randSpace) || checkArray(visited, randSpace)) {
 		randSpace = danger[Math.round(Math.random() * (danger.length-1))];
-		i++;
+		row++;
 	}
 	$('#console').prepend("Random danger zone at: [" + randSpace[0] + "," + randSpace[1] + "]<br/>");
 	pathingReset();
@@ -386,9 +401,9 @@ function pathingReset() {
 	}
 }
 function removeFrom(array, value) {
-	for(var i = 0; i < array.length; i++) {
-		if (array[i].join() == value.join()) {
-			array.splice(i,1);
+	for(var row = 0; row < array.length; row++) {
+		if (array[row].join() == value.join()) {
+			array.splice(row,1);
 			break;
 		}
 	}
@@ -396,3 +411,27 @@ function removeFrom(array, value) {
 function autoRun() {
 	auto=true;
 }
+
+ $(document).keydown(function (e) {
+        switch (e.which) {
+            case 37: // left
+               	moveLeft();
+                break;
+
+            case 38: // up
+            	moveUp();
+                break;
+
+            case 39: // right
+            	moveRight();
+                break;
+
+            case 40: // down
+            	moveDown();
+                break;
+
+            default:
+                return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    });
